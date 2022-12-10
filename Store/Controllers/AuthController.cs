@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 //using Store.Helpers.Attributes;
 using System.Data;
 using Store.Models.Enums;
+using Store.Helpers.Attributes;
 
 namespace Store.Controllers.Users
 {
@@ -66,7 +67,7 @@ namespace Store.Controllers.Users
             return Ok();
         }
 
-        //[Authorization(Role.Admin)]
+        [Authorization(Role.Admin)]
         [HttpGet("admin")]
         public IActionResult GetAllAdmin()
         {
@@ -74,7 +75,7 @@ namespace Store.Controllers.Users
             return Ok(users);
         }
 
-        //[Authorization(Role.User)]
+        [Authorization(Role.User)]
         [HttpGet("user")]
         public IActionResult GetAllUser()
         {
