@@ -18,13 +18,12 @@ namespace Store.Helpers.Middleware
 
             var userId = jwtUtils.ValidateJwtToken(token);
 
-            if(userId != Guid.Empty)
+            if (userId != Guid.Empty)
             {
                 httpContext.Items["User"] = usersService.GetById(userId);
             }
 
             await _nextRequestDelegate(httpContext);
         }
-
     }
 }

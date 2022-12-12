@@ -16,6 +16,6 @@ namespace Store.Models
 
             public string PasswordHash { get; set; }
 
-            public Role Role { get; set; }
+            public Roles Role { get; set; }
     }
 }

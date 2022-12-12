@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Store.Models.Enums;
 using Store.Helpers.Attributes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Store.Controllers.Users
 {
@@ -30,7 +31,7 @@ namespace Store.Controllers.Users
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Role = Role.User,
+                Role = Roles.User,
                 Email = user.Email,
                 PasswordHash = BCryptNet.HashPassword(user.Password)
             };
@@ -38,7 +39,6 @@ namespace Store.Controllers.Users
             await _userService.Create(userToCreate);
             return Ok();
         }
-
         [HttpPost("create-admin")]
         public async Task<IActionResult> CreateAdmin(UserRequestDto user)
         {
@@ -47,7 +47,7 @@ namespace Store.Controllers.Users
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Role = Role.Admin,
+                Role = Roles.Admin,
                 Email = user.Email,
                 PasswordHash = BCryptNet.HashPassword(user.Password)
             };
@@ -64,19 +64,17 @@ namespace Store.Controllers.Users
             {
                 return BadRequest("Username or password is invalid!");
             }
-            return Ok();
+            return Ok(response.Token);
         }
 
-        [Authorization(Role.Admin)]
-        [HttpGet("admin")]
+        [HttpGet("see-admin"), Authorize(Roles = "Admin")]
         public IActionResult GetAllAdmin()
         {
-            var users = _userService.GetAllUsers();
-            return Ok(users);
+            //var users = _userService.GetAllUsers();
+            return Ok("Admin");
         }
 
-        [Authorization(Role.User)]
-        [HttpGet("user")]
+        [HttpGet("see-user"), Authorize]
         public IActionResult GetAllUser()
         {
             return Ok("User");

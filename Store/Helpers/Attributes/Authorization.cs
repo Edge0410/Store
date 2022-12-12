@@ -1,15 +1,18 @@
-﻿using Store.Models;
-using Store.Models.Enums;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Store.Models;
+using Store.Models.Enums;
+using Store.Models.Enums;
+using Store.Models;
+using System.Data;
 
 namespace Store.Helpers.Attributes
 {
-    public class AuthorizationAttribute: Attribute, IAuthorizationFilter
+    public class AuthorizationAttribute : Attribute, IAuthorizationFilter
     {
-        private readonly ICollection<Role> _roles;
+        private readonly ICollection<Roles> _roles;
 
-        public AuthorizationAttribute(params Role[] roles)
+        public AuthorizationAttribute(params Roles[] roles)
         {
             _roles = roles;
         }
@@ -20,13 +23,13 @@ namespace Store.Helpers.Attributes
             { StatusCode = StatusCodes.Status401Unauthorized };
 
 
-            if(_roles == null)
+            if (_roles == null)
             {
-                context.Result = unauthorizedStatusObject;  
+                context.Result = unauthorizedStatusObject;
             }
 
             var user = (User)context.HttpContext.Items["User"];
-            if(user == null || !_roles.Contains(user.Role))
+            if (user == null || !_roles.Contains(user.Role))
             {
                 context.Result = unauthorizedStatusObject;
             }

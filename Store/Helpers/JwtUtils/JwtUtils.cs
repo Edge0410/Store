@@ -10,22 +10,25 @@ namespace Store.Helpers.JwtUtils
     public class JwtUtils: IJwtUtils
     {
         public readonly AppSettings _appSettings;
+        private readonly IConfiguration _config;
 
-        public JwtUtils(IOptions<AppSettings> appSettings)
+        public JwtUtils(IOptions<AppSettings> appSettings, IConfiguration config)
         {
             _appSettings = appSettings.Value;
+            _config = config;
         }
 
         public string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtToken);
+            var appPrivateKey = Encoding.ASCII.GetBytes(_config.GetValue<string>("AppSettings:JwtToken"));
 
             var tokenDesriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("id", user.Id.ToString())
+                    new Claim("id", user.Id.ToString()),
+                    new Claim("role", user.Role.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(appPrivateKey), SecurityAlgorithms.HmacSha256Signature)
@@ -61,7 +64,6 @@ namespace Store.Helpers.JwtUtils
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = new Guid(jwtToken.Claims.FirstOrDefault(x => x.Type == "id").Value);
-
                 return userId;
             }
             catch

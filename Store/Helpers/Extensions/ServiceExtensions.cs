@@ -36,7 +36,6 @@ namespace Store.Helpers.Extensions
         public static IServiceCollection AddUtils(this IServiceCollection services)
         {
             services.AddScoped<IJwtUtils, JwtUtils.JwtUtils>();
-
             return services;
         }
     }
