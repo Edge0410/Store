@@ -30,17 +30,14 @@ public class AppDbContext : DbContext
             .WithMany(uu => uu.OrderLists)
             .HasForeignKey(uuu => uuu.ProductId);
         */
-    }
 
-    /*    public DbSet<Order> Orders { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
-        public DbSet<OrderList> OrderLists { get; set; }
-    */
+        modelBuilder.Entity<User>()
+            .HasMany(o => o.Orders)
+            .WithOne(oo => oo.User);
+    }
 
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
 }

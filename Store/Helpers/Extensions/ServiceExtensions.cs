@@ -4,6 +4,8 @@ using Store.Services.Products;
 using Store.Helpers.JwtUtils;
 using Store.Repositories.UsersRepository;
 using Store.Repositories.ProductsRepository;
+using Store.Repositories.OrdersRepository;
+using Store.Services.Orders;
 
 namespace Store.Helpers.Extensions
 {
@@ -14,6 +16,7 @@ namespace Store.Helpers.Extensions
             //services.AddTransient<IDatabaseRepository, DatabaseRepository>();
             services.AddTransient<IUserRepository, UsersRepository>();
             services.AddTransient<IProductRepository, ProductsRepository>();
+            services.AddTransient<IOrderRepository, OrdersRepository>();
 
             return services;
         }
@@ -22,6 +25,7 @@ namespace Store.Helpers.Extensions
         {
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IProductService, ProductsService>();
+            services.AddTransient<IOrderService, OrdersService>();
 
             return services;
         }
