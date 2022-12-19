@@ -10,34 +10,32 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        /*modelBuilder.Entity<UserRole>()
-            .HasOne(u => u.User)
-            .WithMany(uu => uu.UserRoles)
-            .HasForeignKey(uuu => uuu.UserId);
-
-        modelBuilder.Entity<UserRole>()
-            .HasOne(u => u.Role)
-            .WithMany(uu => uu.UserRoles)
-            .HasForeignKey(uuu => uuu.RoleId);
-
-        modelBuilder.Entity<OrderList>()
-            .HasOne(u => u.Order)
-            .WithMany(uu => uu.OrderLists)
-            .HasForeignKey(uuu => uuu.OrderId);
-
-        modelBuilder.Entity<OrderList>()
-            .HasOne(u => u.Product)
-            .WithMany(uu => uu.OrderLists)
-            .HasForeignKey(uuu => uuu.ProductId);
-        */
+        // 1-M
 
         modelBuilder.Entity<User>()
             .HasMany(o => o.Orders)
             .WithOne(oo => oo.User);
+
+        // M-M
+
+        modelBuilder.Entity<OrderList>()
+            .HasKey(o => new { o.OrderId, o.ProductId, o.Id });
+
+        modelBuilder.Entity<OrderList>()
+            .HasOne(o => o.Order)
+            .WithMany(oo => oo.OrderList)
+            .HasForeignKey(ooo => ooo.OrderId);
+
+        modelBuilder.Entity<OrderList>()
+            .HasOne(o => o.Product)
+            .WithMany(oo => oo.OrderList)
+            .HasForeignKey(ooo => ooo.ProductId);
+
     }
 
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderList> OrderLists { get; set; }
 
 }

@@ -8,6 +8,7 @@ namespace Store.Models
         public string Description { get; set; }
         public User User { get; set; }
         public Guid UserId { get; set; }
+        public List<OrderList> OrderList { get; set; }
 
     }
 }

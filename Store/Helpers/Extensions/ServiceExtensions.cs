@@ -6,6 +6,8 @@ using Store.Repositories.UsersRepository;
 using Store.Repositories.ProductsRepository;
 using Store.Repositories.OrdersRepository;
 using Store.Services.Orders;
+using Store.Repositories.OrderListsRepository;
+using Store.Services.OrderLists;
 
 namespace Store.Helpers.Extensions
 {
@@ -17,6 +19,7 @@ namespace Store.Helpers.Extensions
             services.AddTransient<IUserRepository, UsersRepository>();
             services.AddTransient<IProductRepository, ProductsRepository>();
             services.AddTransient<IOrderRepository, OrdersRepository>();
+            services.AddTransient<IOrderListRepository, OrderListsRepository>();
 
             return services;
         }
@@ -26,6 +29,8 @@ namespace Store.Helpers.Extensions
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IProductService, ProductsService>();
             services.AddTransient<IOrderService, OrdersService>();
+            services.AddTransient<IOrderListService, OrderListsService>();
+
 
             return services;
         }

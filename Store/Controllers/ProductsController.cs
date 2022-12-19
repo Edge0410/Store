@@ -3,6 +3,7 @@ using Store.Models.Enums;
 using Store.Models;
 using Store.Models.DTOs;
 using Store.Services.Products;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Store.Controllers
 {
@@ -16,7 +17,7 @@ namespace Store.Controllers
             _productsService = productService;
         }
 
-        [HttpPost("add-product")]
+        [HttpPost("add-product"), Authorize]
         public async Task<IActionResult> AddProduct(ProductRequestDto product)
         {
             var productToCreate = new Product
