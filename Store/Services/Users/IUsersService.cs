@@ -5,9 +5,10 @@ namespace Store.Services.Users
 {
     public interface IUsersService
     {
-        UserResponseDto Authentificate(UserRequestDto model);
+        UserResponseDto Authentificate(LoginUserRequestDto model);
         Task<List<User>> GetAllUsers();
         User GetById(Guid id);
         Task Create(User newUser);
+        Task Delete(string username);
     }
 }

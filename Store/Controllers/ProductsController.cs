@@ -44,5 +44,12 @@ namespace Store.Controllers
             return Ok("Product found! Id: " + productId);
         }
 
+        [HttpDelete("delete-product")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            await _productsService.Delete(id);
+            return Ok("Product with id " + id + " was deleted");
+        }
+
     }
 }

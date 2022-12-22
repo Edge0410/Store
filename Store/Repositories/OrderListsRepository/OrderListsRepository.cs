@@ -9,5 +9,10 @@ namespace Store.Repositories.OrderListsRepository
         {
             
         }
+
+        public OrderList FindByIds(Guid order, Guid product)
+        {
+            return _table.FirstOrDefault(x => x.OrderId == order && x.ProductId == product);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Store.Repositories.UsersRepository;
+﻿    using Store.Repositories.UsersRepository;
 using Store.Models;
 using Store.Repositories.GenericRepository;
 
@@ -15,5 +15,6 @@ namespace Store.Repositories.UsersRepository
         {
             return _table.FirstOrDefault(x => x.Username == username);
         }
+
     }
 }

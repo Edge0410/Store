@@ -29,5 +29,13 @@ namespace Store.Controllers
             await _orderlistService.Create(orderListToCreate);
             return Ok("Product added to order");
         }
+
+        [HttpDelete("delete-product-from-order")]
+        public async Task<IActionResult> DeleteProductFromOrder(Guid order, Guid product)
+        {
+            await _orderlistService.Delete(order, product);
+            return Ok("Product " + product + " removed from order " + order);
+        }
+
     }
 }

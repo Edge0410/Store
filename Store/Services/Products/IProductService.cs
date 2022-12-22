@@ -6,5 +6,6 @@ namespace Store.Services.Products
     {
         Task Create(Product newProduct);
         Guid FindProductByName(string name);
+        Task Delete(Guid id);
     }
 }

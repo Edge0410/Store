@@ -22,5 +22,12 @@ namespace Store.Services.Products
         {
             return _productRepository.FindByName(name);
         }
+
+        public async Task Delete(Guid id)
+        {
+            var product = _productRepository.FindById(id);
+            _productRepository.Delete(product);
+            await _productRepository.SaveAsync();
+        }
     }
 }

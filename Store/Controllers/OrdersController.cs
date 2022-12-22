@@ -30,5 +30,12 @@ namespace Store.Controllers
             await _ordersService.Create(orderToCreate);
             return Ok("Added order successfully");
         }
+
+        [HttpDelete("delete-order")]
+        public async Task<IActionResult> DeleteOrder(Guid id)
+        {
+            await _ordersService.Delete(id);
+            return Ok("Order with id " + id + " was deleted");
+        }
     }
 }

@@ -18,5 +18,12 @@ namespace Store.Services.Orders
             await _orderRepository.SaveAsync();
         }
 
+        public async Task Delete(Guid id)
+        {
+            var order = _orderRepository.FindById(id);
+            _orderRepository.Delete(order);
+            await _orderRepository.SaveAsync();
+        }
+
     }
 }

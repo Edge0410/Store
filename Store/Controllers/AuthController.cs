@@ -57,7 +57,7 @@ namespace Store.Controllers.Users
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(UserRequestDto user)
+        public async Task<IActionResult> Authenticate(LoginUserRequestDto user)
         {
             var response = _userService.Authentificate(user);
             if (response == null)
@@ -78,6 +78,13 @@ namespace Store.Controllers.Users
         public IActionResult GetAllUser()
         {
             return Ok("User");
+        }
+
+        [HttpDelete("delete-user"), Authorize]
+        public async Task<IActionResult> DeleteUser(string username)
+        {
+            await _userService.Delete(username);
+            return Ok("User " + username + " was removed");
         }
     }
 }

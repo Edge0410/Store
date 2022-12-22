@@ -17,7 +17,7 @@ namespace Store.Services.Users
             _jwtUtils = jwtUtils;
         }
 
-        public UserResponseDto Authentificate(UserRequestDto model)
+        public UserResponseDto Authentificate(LoginUserRequestDto model)
         {
             var user = _userRepository.FindByUsername(model.UserName);
             if(user == null || !BCryptNet.Verify(model.Password, user.PasswordHash))
@@ -45,6 +45,13 @@ namespace Store.Services.Users
         public User GetById(Guid id)
         {
             return _userRepository.FindById(id);
+        }
+
+        public async Task Delete(string username)
+        {
+            var user = _userRepository.FindByUsername(username);
+            _userRepository.Delete(user);
+            await _userRepository.SaveAsync();
         }
     }
 }

@@ -18,5 +18,12 @@ namespace Store.Services.OrderLists
             await _orderlistRepository.CreateAsync(new OrderList { OrderId = newList.OrderId, ProductId = newList.ProductId});
             await _orderlistRepository.SaveAsync();
         }
+
+        public async Task Delete(Guid order, Guid product)
+        {
+            var orderToDelete = _orderlistRepository.FindByIds(order, product);
+            _orderlistRepository.Delete(orderToDelete);
+            await _orderlistRepository.SaveAsync();
+        }
     }
 }
