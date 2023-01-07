@@ -26,9 +26,9 @@ namespace Store.Controllers.Users
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser(UserRequestDto user)
         {
-            var userToCreate = new User
+            var newUser = new User
             {
-                Username = user.UserName,
+                Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Role = Roles.User,
@@ -36,15 +36,15 @@ namespace Store.Controllers.Users
                 PasswordHash = BCryptNet.HashPassword(user.Password)
             };
 
-            await _userService.Create(userToCreate);
+            await _userService.Create(newUser);
             return Ok();
         }
         [HttpPost("create-admin")]
         public async Task<IActionResult> CreateAdmin(UserRequestDto user)
         {
-            var userToCreate = new User
+            var newUser = new User
             {
-                Username = user.UserName,
+                Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Role = Roles.Admin,
@@ -52,7 +52,7 @@ namespace Store.Controllers.Users
                 PasswordHash = BCryptNet.HashPassword(user.Password)
             };
 
-            await _userService.Create(userToCreate);
+            await _userService.Create(newUser);
             return Ok();
         }
 
@@ -67,20 +67,28 @@ namespace Store.Controllers.Users
             return Ok(response.Token);
         }
 
-        [HttpGet("see-admin"), Authorize(Roles = "Admin")]
-        public IActionResult GetAllAdmin()
+        [HttpGet("show-users"), Authorize(Roles = "Admin")]
+        public Task<List<User>> ShowAllUsers()
         {
-            //var users = _userService.GetAllUsers();
-            return Ok("Admin");
+            var users = _userService.GetAllUsers();
+            return users;
         }
 
-        [HttpGet("see-user"), Authorize]
-        public IActionResult GetAllUser()
+        [HttpGet("show-user"), Authorize(Roles = "User")]
+        public IActionResult ShowUser()
         {
-            return Ok("User");
+            return Ok("Logged in as standard User");
         }
 
-        [HttpDelete("delete-user"), Authorize]
+        [HttpPut("edit/{id}"), Authorize]
+        public async Task<IActionResult> EditUser(Guid id, UserEditDto editUser)
+        {
+            await _userService.Edit(id, editUser);
+            return Ok("User was modified");
+        }
+
+
+        [HttpDelete("delete/{username}"), Authorize]
         public async Task<IActionResult> DeleteUser(string username)
         {
             await _userService.Delete(username);

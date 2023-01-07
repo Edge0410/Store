@@ -31,8 +31,25 @@ namespace Store.Controllers
             return Ok("Added order successfully");
         }
 
-        [HttpDelete("delete-order")]
-        public async Task<IActionResult> DeleteOrder(Guid id)
+        [HttpGet("find-order"), Authorize]
+        public IActionResult FindOrder(Guid id)
+        {
+            var order = _ordersService.FindById(id);
+            //if (orderId == Guid.Empty)
+            //    return BadRequest("Product was not found in the database");
+
+            return Ok(order);
+        }
+
+        [HttpPut("edit-order"), Authorize]
+        public async Task<IActionResult> Edit(Guid id, OrderRequestDto editOrder)
+        {
+            await _ordersService.Edit(id, editOrder);
+            return Ok("Order was modified");
+        }
+
+        [HttpDelete("delete-order"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _ordersService.Delete(id);
             return Ok("Order with id " + id + " was deleted");

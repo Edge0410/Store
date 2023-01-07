@@ -1,4 +1,5 @@
 ﻿using Store.Models;
+using Store.Models.DTOs;
 
 namespace Store.Services.Products
 {
@@ -6,6 +7,7 @@ namespace Store.Services.Products
     {
         Task Create(Product newProduct);
         Guid FindProductByName(string name);
+        Task Edit(Guid id, ProductRequestDto editProduct);
         Task Delete(Guid id);
     }
 }

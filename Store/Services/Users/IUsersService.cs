@@ -9,6 +9,7 @@ namespace Store.Services.Users
         Task<List<User>> GetAllUsers();
         User GetById(Guid id);
         Task Create(User newUser);
+        Task Edit(Guid id, UserEditDto editUser);
         Task Delete(string username);
     }
 }

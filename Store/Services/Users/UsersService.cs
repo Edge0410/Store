@@ -19,7 +19,7 @@ namespace Store.Services.Users
 
         public UserResponseDto Authentificate(LoginUserRequestDto model)
         {
-            var user = _userRepository.FindByUsername(model.UserName);
+            var user = _userRepository.FindByUsername(model.Username);
             if(user == null || !BCryptNet.Verify(model.Password, user.PasswordHash))
             {
                 return null; //or throw exception
@@ -45,6 +45,15 @@ namespace Store.Services.Users
         public User GetById(Guid id)
         {
             return _userRepository.FindById(id);
+        }
+
+        public async Task Edit(Guid id, UserEditDto editUser)
+        {
+            var foundUser = await _userRepository.FindByIdAsync(id);
+            foundUser.Email = editUser.Email;
+            foundUser.FirstName = editUser.FirstName;
+            foundUser.LastName = editUser.LastName;
+            await _userRepository.SaveAsync();
         }
 
         public async Task Delete(string username)

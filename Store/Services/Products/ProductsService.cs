@@ -1,4 +1,5 @@
 ﻿using Store.Models;
+using Store.Models.DTOs;
 using Store.Repositories.ProductsRepository;
 
 namespace Store.Services.Products
@@ -21,6 +22,16 @@ namespace Store.Services.Products
         public Guid FindProductByName(string name)
         {
             return _productRepository.FindByName(name);
+        }
+
+        public async Task Edit(Guid id, ProductRequestDto editProduct)
+        {
+            var productFound = await _productRepository.FindByIdAsync(id);
+            productFound.Description = editProduct.Description;
+            productFound.Name = editProduct.Name;
+            productFound.Price = editProduct.Price;
+            productFound.Quantity = editProduct.Quantity;
+            await _productRepository.SaveAsync();
         }
 
         public async Task Delete(Guid id)

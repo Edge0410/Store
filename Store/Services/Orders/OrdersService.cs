@@ -1,4 +1,5 @@
 ﻿using Store.Models;
+using Store.Models.DTOs;
 using Store.Repositories.OrdersRepository;
 
 namespace Store.Services.Orders
@@ -12,9 +13,22 @@ namespace Store.Services.Orders
             _orderRepository = orderRepository;
         }
 
+        public Order FindById(Guid id)
+        {
+            return _orderRepository.FindById(id);
+        }
+
         public async Task Create(Order newOrder)
         {
             await _orderRepository.CreateAsync(newOrder);
+            await _orderRepository.SaveAsync();
+        }
+
+        public async Task Edit(Guid id, OrderRequestDto editOrder)
+        {
+            var orderFound = await _orderRepository.FindByIdAsync(id);
+            orderFound.Description = editOrder.Description;
+            orderFound.DeliveryAddress = editOrder.DeliveryAddress;
             await _orderRepository.SaveAsync();
         }
 

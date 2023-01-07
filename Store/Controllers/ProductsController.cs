@@ -17,7 +17,7 @@ namespace Store.Controllers
             _productsService = productService;
         }
 
-        [HttpPost("add-product"), Authorize]
+        [HttpPost("add-product"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProduct(ProductRequestDto product)
         {
             var productToCreate = new Product
@@ -34,7 +34,7 @@ namespace Store.Controllers
         // de adaugat service, dto, model si repo
         }
 
-        [HttpGet("find-product")]
+        [HttpGet("find-product"), Authorize]
         public IActionResult FindProduct(string name)
         {
             Guid productId = _productsService.FindProductByName(name);
@@ -44,7 +44,14 @@ namespace Store.Controllers
             return Ok("Product found! Id: " + productId);
         }
 
-        [HttpDelete("delete-product")]
+        [HttpPut("edit-product"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditProduct(Guid id, ProductRequestDto editProduct)
+        {
+            await _productsService.Edit(id, editProduct);
+            return Ok("Product was modified");
+        }
+
+        [HttpDelete("delete-product"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             await _productsService.Delete(id);
