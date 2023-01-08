@@ -2,12 +2,11 @@
 
 namespace Store.Models.DTOs
 {
-    public class ProductRequestDto
+    public class ProductDetailsDto
     {
-        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        [Required]
         public double Price { get; set; }
+        public int QuantitySold { get; set; }
     }
 }

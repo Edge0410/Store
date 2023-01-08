@@ -8,6 +8,7 @@ using Store.Repositories.OrdersRepository;
 using Store.Services.Orders;
 using Store.Repositories.OrderListsRepository;
 using Store.Services.OrderLists;
+using Store.Repositories.UnitOfWork;
 
 namespace Store.Helpers.Extensions
 {
@@ -20,6 +21,7 @@ namespace Store.Helpers.Extensions
             services.AddTransient<IProductRepository, ProductsRepository>();
             services.AddTransient<IOrderRepository, OrdersRepository>();
             services.AddTransient<IOrderListRepository, OrderListsRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

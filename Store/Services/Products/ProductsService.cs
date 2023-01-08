@@ -1,44 +1,49 @@
 ﻿using Store.Models;
 using Store.Models.DTOs;
 using Store.Repositories.ProductsRepository;
+using Store.Repositories.UnitOfWork;
 
 namespace Store.Services.Products
 {
     public class ProductsService : IProductService
     {
-        public IProductRepository _productRepository;
+        public IUnitOfWork _unitOfWork;
 
-        public ProductsService(IProductRepository productRepository)
+        public ProductsService(IUnitOfWork unitOfWork)
         {
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Create(Product newProduct)
         {
-            await _productRepository.CreateAsync(newProduct);
-            await _productRepository.SaveAsync();
+            await _unitOfWork.ProductRepository.CreateAsync(newProduct);
+            await _unitOfWork.SaveAsync();
         }
 
         public Guid FindProductByName(string name)
         {
-            return _productRepository.FindByName(name);
+            return _unitOfWork.ProductRepository.FindByName(name);
+        }
+
+        public IQueryable<ProductDetailsDto> ShowProductsReport()
+        {
+            return _unitOfWork.ProductRepository.ShowProductsReport();
         }
 
         public async Task Edit(Guid id, ProductRequestDto editProduct)
         {
-            var productFound = await _productRepository.FindByIdAsync(id);
+            var productFound = await _unitOfWork.ProductRepository.FindByIdAsync(id);
             productFound.Description = editProduct.Description;
             productFound.Name = editProduct.Name;
             productFound.Price = editProduct.Price;
-            productFound.Quantity = editProduct.Quantity;
-            await _productRepository.SaveAsync();
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task Delete(Guid id)
         {
-            var product = _productRepository.FindById(id);
-            _productRepository.Delete(product);
-            await _productRepository.SaveAsync();
+            var product = _unitOfWork.ProductRepository.FindById(id);
+            _unitOfWork.ProductRepository.Delete(product);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

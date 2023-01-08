@@ -7,6 +7,7 @@ namespace Store.Services.Products
     {
         Task Create(Product newProduct);
         Guid FindProductByName(string name);
+        IQueryable<ProductDetailsDto> ShowProductsReport();
         Task Edit(Guid id, ProductRequestDto editProduct);
         Task Delete(Guid id);
     }

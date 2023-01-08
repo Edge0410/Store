@@ -24,7 +24,6 @@ namespace Store.Controllers
             {
                 Name = product.Name,
                 Description = product.Description,
-                Quantity = product.Quantity,
                 Price = product.Price
             };
 
@@ -42,6 +41,13 @@ namespace Store.Controllers
                 return BadRequest("Product was not found in the database");
 
             return Ok("Product found! Id: " + productId);
+        }
+
+        [HttpGet("show-report")]
+        public IActionResult ShowReport()
+        {
+            var products = _productsService.ShowProductsReport();
+            return Ok(products);
         }
 
         [HttpPut("edit-product"), Authorize(Roles = "Admin")]

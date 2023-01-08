@@ -19,12 +19,13 @@ namespace Store.Controllers
         }
 
         [HttpPost("add-product-to-order"), Authorize]
-        public async Task<IActionResult> AddProductToOrder(Guid order, Guid product)
+        public async Task<IActionResult> AddProductToOrder(Guid order, Guid product, int productNumber)
         {
             var orderListToCreate = new OrderListRequestDto
             {
                 OrderId = order,
-                ProductId = product
+                ProductId = product,
+                Quantity = productNumber
             };
             await _orderlistService.Create(orderListToCreate);
             return Ok("Product added to order");

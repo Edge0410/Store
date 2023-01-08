@@ -36,8 +36,15 @@ namespace Store.Controllers
         {
             var order = _ordersService.FindById(id);
             //if (orderId == Guid.Empty)
-            //    return BadRequest("Product was not found in the database");
+            //    return BadRequest("Order was not found in the database");
 
+            return Ok(order);
+        }
+
+        [HttpGet("show-details"), Authorize]
+        public IActionResult ShowDetails(Guid id)
+        {
+            var order = _ordersService.ShowDetails(id);
             return Ok(order);
         }
 
@@ -54,5 +61,7 @@ namespace Store.Controllers
             await _ordersService.Delete(id);
             return Ok("Order with id " + id + " was deleted");
         }
+
+
     }
 }

@@ -11,7 +11,6 @@ namespace Store.Models
         [Required]
         public double Price { get; set; }
         [Required]
-        public int Quantity { get; set; }
         public List<OrderList> OrderList { get; set; }
     }
 }

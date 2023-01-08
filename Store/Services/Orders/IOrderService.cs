@@ -7,7 +7,7 @@ namespace Store.Services.Orders
     {
         Task Create(Order newOrder);
         Order FindById(Guid id);
-
+        OrderWithProductsDto ShowDetails(Guid id);
         Task Edit(Guid id, OrderRequestDto editOrder);
         Task Delete(Guid id);
     }
