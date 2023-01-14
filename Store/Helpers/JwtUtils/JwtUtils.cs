@@ -4,6 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
+using Azure;
 
 namespace Store.Helpers.JwtUtils
 {
@@ -18,6 +20,18 @@ namespace Store.Helpers.JwtUtils
             _config = config;
         }
 
+        public RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                 RefreshTokenExpirationDate = DateTime.Now.AddDays(1),
+                 RefreshTokenCreationDate = DateTime.Now
+            };
+
+            return refreshToken;
+        }
+
         public string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -30,7 +44,7 @@ namespace Store.Helpers.JwtUtils
                     new Claim("id", user.Id.ToString()),
                     new Claim("role", user.Role.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddDays(10),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(appPrivateKey), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -47,15 +61,15 @@ namespace Store.Helpers.JwtUtils
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtToken);
+            var appPrivateKey = Encoding.ASCII.GetBytes(_config.GetValue<string>("AppSettings:JwtToken"));
 
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(appPrivateKey),
-                ValidateIssuer = true,
+                ValidateIssuer = false,
                 ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero,
+                ValidateLifetime = false,
             };
 
             try

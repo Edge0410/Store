@@ -29,7 +29,17 @@ namespace Store.Services.Users
 
             // jwt generation
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
-            return new UserResponseDto(user, jwtToken);
+            var refreshToken = _jwtUtils.GenerateRefreshToken();
+            return new UserResponseDto(user, jwtToken, refreshToken);
+        }
+
+        public UserResponseDto RefreshTokens(Guid? id)
+        {
+            var user = _unitOfWork.UserRepository.FindById(id);
+            // jwt generation
+            var jwtToken = _jwtUtils.GenerateJwtToken(user);
+            var refreshToken = _jwtUtils.GenerateRefreshToken();
+            return new UserResponseDto(user, jwtToken, refreshToken);
         }
 
         public async Task Create(User newUser)
@@ -63,5 +73,31 @@ namespace Store.Services.Users
             _unitOfWork.UserRepository.Delete(user);
             await _unitOfWork.SaveAsync();
         }
+
+        public async Task SetRefreshToken(string username, RefreshToken token)
+        {
+            var user = _unitOfWork.UserRepository.FindByUsername(username);
+            user.RefreshToken = token.Token;
+            user.RefreshTokenCreationDate = token.RefreshTokenCreationDate;
+            user.RefreshTokenExpirationDate = token.RefreshTokenExpirationDate;
+            await _unitOfWork.SaveAsync();
+        }
+        public async Task<RefreshToken> GetRefreshToken(Guid? id)
+        {
+            var user = _unitOfWork.UserRepository.FindById(id);
+            var refreshToken = new RefreshToken
+            {
+                Token = user.RefreshToken,
+                RefreshTokenCreationDate = user.RefreshTokenCreationDate,
+                RefreshTokenExpirationDate = user.RefreshTokenExpirationDate
+            };
+            return refreshToken;
+        }
+        public async Task<Guid> GetIdFromToken(string token)
+        {
+            var user = _jwtUtils.ValidateJwtToken(token);
+            return user;
+        }
+
     }
 }

@@ -6,5 +6,6 @@ namespace Store.Helpers.JwtUtils
     {
         public string GenerateJwtToken(User user);
         public Guid ValidateJwtToken(string token);
+        public RefreshToken GenerateRefreshToken();
     }
 }
