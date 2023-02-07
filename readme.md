@@ -19,4 +19,5 @@ Acest proiect constituie simularea unui magazin online (doar backend)
  #### Puncte Extra:
  
  -Unit of Work (1p) -> **Folderul Repositories -> Folderul Unit Of Work**
+ 
  -Refresh Token (1p) -> **In AuthController au fost apelate metodele la login/refresh, si in Helpers/JwtUtils a fost generat** 
