@@ -8,6 +8,7 @@ namespace Store.Models.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         [Required]
+        [Range(double.Epsilon, double.MaxValue)]
         public double Price { get; set; }
     }
 }

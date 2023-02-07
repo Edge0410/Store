@@ -35,8 +35,8 @@ namespace Store.Controllers
         public IActionResult FindOrder(Guid id)
         {
             var order = _ordersService.FindById(id);
-            //if (orderId == Guid.Empty)
-            //    return BadRequest("Order was not found in the database");
+            if (order.Id == Guid.Empty)
+                return BadRequest("Order was not found in the database");
 
             return Ok(order);
         }
@@ -48,7 +48,7 @@ namespace Store.Controllers
             return Ok(order);
         }
 
-        [HttpPut("edit-order"), Authorize]
+        [HttpPut("edit-order"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid id, OrderRequestDto editOrder)
         {
             await _ordersService.Edit(id, editOrder);

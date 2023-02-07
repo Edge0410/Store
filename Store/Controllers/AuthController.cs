@@ -109,7 +109,7 @@ namespace Store.Controllers.Users
             return Ok("Logged in as standard User");
         }
 
-        [HttpPut("edit/{id}"), Authorize]
+        [HttpPut("edit"), Authorize]
         public async Task<IActionResult> EditUser(Guid id, UserEditDto editUser)
         {
             await _userService.Edit(id, editUser);
@@ -117,7 +117,7 @@ namespace Store.Controllers.Users
         }
 
 
-        [HttpDelete("delete/{username}"), Authorize]
+        [HttpDelete("delete"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string username)
         {
             await _userService.Delete(username);
